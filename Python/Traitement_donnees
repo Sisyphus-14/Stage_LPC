@@ -1,0 +1,43 @@
+#Métode Numérique TP N°5
+#Stage LPC Juillet 2023
+
+#Importation des libs python
+
+#Première partie
+
+import numpy as np
+import scipy 
+import matplotlib.pyplot as plt
+import random as rdm
+import Gauss
+import Expo
+#Définition de la plage
+
+xmin,xmax,xbins = 0,50,120
+
+#Création des data
+def fun_GaussExpo(mu1,sigma1,mu2,sigma2,lam,x):
+	return (Gauss.gaussian(x,mu1,sigma1,1)+Gauss.gaussian(x,mu2,sigma2,1)+Expo.expo(x,lam,1))
+
+def data():
+	l1 = Expo.Numpy_Expo(40000,0.5,1)
+	l2 = Gauss.Numpy_Gauss(10000,2,0.3,1)
+	l3 = Gauss.Numpy_Gauss(6000,4.5,0.15,1)
+	for i in range(0,len(l2)):
+		l1[i] = l1[i] + l2[i]
+	for i in range(0,len(l3)):
+		l1[i] = l1[i] + l3[i]
+	return(l1)
+
+#fit
+
+def fit():
+	return(scipy.optimize.curve_fit(fun_GaussExpo,np.linspace(0,100,40000),data()))
+#Affichage
+
+def affichage():
+	plt.figure(31)
+	plt.hist(data(),xbins)
+	plt.legend(['Affichage des data'])
+	plt.show()
+
