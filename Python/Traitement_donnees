@@ -14,15 +14,16 @@ import Expo
 #Définition de la plage
 
 xmin,xmax,xbins = 0,50,120
-
+Ntot = 40000
+mu1,sigma1,mu2,sigma2,lam,A1,A2,B1 = 2,0.3,4.5,0.15,0.5,1,1,1
 #Création des data
-def fun_GaussExpo(mu1,sigma1,mu2,sigma2,lam,x):
-	return (Gauss.gaussian(x,mu1,sigma1,1)+Gauss.gaussian(x,mu2,sigma2,1)+Expo.expo(x,lam,1))
+def fun_GaussExpo(x,mu1,sigma1,mu2,sigma2,lam,A1,A2,B1):
+	return (Gauss.gaussian(x,mu1,sigma1,A1)+Gauss.gaussian(x,mu2,sigma2,A2)+Expo.expo(x,lam,B1))
 
-def data():
-	l1 = Expo.Numpy_Expo(40000,0.5,1)
-	l2 = Gauss.Numpy_Gauss(10000,2,0.3,1)
-	l3 = Gauss.Numpy_Gauss(6000,4.5,0.15,1)
+def data(Ntot,mu1,sigma1,mu2,sigma2,lam):
+	l1 = Expo.Numpy_Expo(Ntot,lam,1)
+	l2 = Gauss.Numpy_Gauss(int(Ntot/4),mu1,sigma1,1)
+	l3 = Gauss.Numpy_Gauss(int(Ntot/6),mu2,sigma2,1)
 	for i in range(0,len(l2)):
 		l1[i] = l1[i] + l2[i]
 	for i in range(0,len(l3)):
@@ -32,12 +33,30 @@ def data():
 #fit
 
 def fit():
-	return(scipy.optimize.curve_fit(fun_GaussExpo,np.linspace(0,100,40000),data()))
+	popt, pcov = scipy.optimize.curve_fit(fun_GaussExpo,np.linspace(xmin,xmax,Ntot),data(Ntot,mu1,sigma1,mu2,sigma2,lam),bounds = ([1,0,3.5,0,0,0,0,0],[3,4,5,0.5,1,5,5,5]))
+	return(popt)
 #Affichage
 
+def MC_funfit(N):
+    mu1,sigma1,mu2,sigma2,lam,A1,A2,B1 = tuple(fit())
+    ymax = scipy.optimize.fminbound(lambda x: -fun_GaussExpo(x,mu1,sigma1,mu2,sigma2,lam,A1,A2,B1), xmin, xmax)
+    lx = []
+    i = 0
+    while i < N:
+        x, y = rdm.uniform(xmin, xmax), rdm.uniform(0, ymax)
+        if y <= fun_GaussExpo(x,mu1,sigma1,mu2,sigma2,lam,A1,A2,B1):
+            lx.append(x)
+            i += 1
+    return lx
+
 def affichage():
+	mua,sigmaa,mub,sigmab,lamz,Aa,Ab,Ba = tuple(fit())
+	lx = np.linspace(xmin,xmax,Ntot)
+	ly = fun_GaussExpo(lx,mua,sigmaa,mub,sigmab,lamz,Aa,Ab,Ba)
 	plt.figure(31)
-	plt.hist(data(),xbins)
-	plt.legend(['Affichage des data'])
+	plt.plot(lx,ly, color="red")
+	plt.plot(lx,fun_GaussExpo(lx,mu1,sigma1,mu2,sigma2,lam,1,1,1))
+	plt.legend(['Data'])
 	plt.show()
 
+affichage()
