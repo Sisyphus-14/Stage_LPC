@@ -1,5 +1,6 @@
 # Stage_LPC
 Stage au LPC, été 2023.
+
 Internship in the LPC, summer 2023.
 
 ## Français
