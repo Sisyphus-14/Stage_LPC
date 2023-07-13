@@ -9,7 +9,7 @@ Internship in the LPC, summer 2023.
 Ce répertoire sert d'archive pour mon stage de première année d'école d'ingénieur à l'ensicaen. 
 
 Ce stage, d'une durée de 6 semaines, a eu lieu au Laboratoire de Physique Corpusculaire (LPC) de Caen. 
-Le sujet était : 
+Le sujet était  
 
 **"Détection de particules Bêta avec un détecteur SIPM"**
 
@@ -29,7 +29,7 @@ Ce répertoire est divisé en trois parties distinctes:
 This repository serves as an archive for my first-year internship at ensicaen engineering school. 
  
 This 6-week internship took place at the Laboratory of Corpuscular Physics (LPC) in Caen. 
-The topic was: 
+The topic was
  
 **"Beta Particle Detection with an SiPM Detector"** 
  
