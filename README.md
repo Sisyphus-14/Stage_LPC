@@ -41,4 +41,3 @@ This repository is divided into three distinct parts:
 - A Python programming section on data analysis (generation of data following Gaussian and Exponential distributions, data fitting, application to measurements performed on the SiPM) [WIP]
 - A G4Beamline programming section (SiPM simulation, simulation with different radioactive sources) [WIP]
 - The lab assignment I wrote (Beta Radioactivity lab assignment for second-year engineering students)[done, yet to push it]
--Test
